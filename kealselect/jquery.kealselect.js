@@ -65,7 +65,11 @@
   Select.prototype = {
     _init: function() {
       var that = this,
-          $el = that.$el;
+          o = that.options,
+          $el = that.$el,
+          title = $.trim($el.attr('title')) || '';
+
+      if (title !== '') o.text.noneSelected = title;
 
       this.id = $el.attr('id');
       if (!this.id) {
@@ -84,7 +88,7 @@
     },
     _create: function(){
       var that = this,
-          o = that.options;
+          o = that.options,
           $el = that.$el;
 
       var $wrapper = (this.$wrapper = $('<div></div>'))
@@ -101,7 +105,7 @@
 
       var $buttonlabel = (this.$buttonlabel = $('<span />')
         .html(o.text.noneSelected)
-        .attr({'title':$el.attr('title')})
+        .attr({'title': $el.attr('title')})
         .appendTo($button));
 
       var $menu = (this.$menu = $('<div />')
