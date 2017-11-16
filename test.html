@@ -17,9 +17,9 @@ $(function() {
   var kealselect = new KealSelect({
     text: { noneSelected: '==请选择==' },
     el: '.kealselect',
-    // selectedCb: function(id, selected) {
-    //   console.log(JSON.stringify(kealselect.getVal()));
-    // }
+    selectedCb: function(id, selected) {
+      console.log(111);
+    }
   });
 
   $('#ks3').on('change', function(){
@@ -51,7 +51,9 @@ $(function() {
   // kealselect._getSelect('#ks3')[0].test();  
 
   $('#clear').on('click', function() {
-    kealselect.clear('#ks3,#ks1');
+    kealselect.clear(function() {
+      console.log(89283878);
+    });
   })
 });
 

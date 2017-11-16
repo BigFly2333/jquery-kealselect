@@ -266,11 +266,13 @@
 
       return this;
     },
-    _bindClear: function() {
+    _bindClear: function(noCb) {
       var that = this;
       
       that.clear();
-      that.options.selectedCb(that.id, that.selected);
+      if (!noCb) {
+        that.options.selectedCb(that.id, that.selected);
+      }
       that.close();
 
       return this;
@@ -606,15 +608,6 @@
 
       return this;
     },
-    _bindClear: function() {
-      var that = this;
-
-      that.clear();
-      that.options.selectedCb(that.id, that.selected);
-      that.close();
-
-      return this;
-    },
     _bindBtnSure: function() {
       var that = this;
 
@@ -915,18 +908,30 @@
         }
       );
     },
-    clear: function(selector) {
+    clear: function(selector, callback) {
       var that = this,
           selects = that.selects;
+      
+      if (!callback) {
+        if (typeof selector === 'function') {
+          callback = selector;
+          selector = undefined;
+        } else if (typeof selector !== 'string') {
+          throw('参数类型有误');
+          return false;
+        }
+      }
 
       _is(selector, selects,
         function(select){
-          select._bindClear();
+          select._bindClear(true);
         },
         function(select) {
-          select._bindClear();
+          select._bindClear(true);
         }
       );
+
+      callback && callback();
     }
     
   };
