@@ -122,14 +122,14 @@ $(function() {
 	</select>
 </p>
 <script>
-  // $(function(){
-  //   $('#Ks2').on('change', function(){
-  //     var $this = $(this);
-  //     if() {
-        
-  //     }
-  //   });
-  // });
+  $(function(){
+    $('#Ks2').on('change', function(){
+      var $this = $(this);
+      if($this.find('.self-choose')) {
+        alert(222);
+      }
+    });
+  });
 </script>
 </body>
 </html>

@@ -536,7 +536,7 @@
 
       $clear.on('click', function() {
         that.clear();
-        that.options.selectedCb();
+        that.options.selectedCb(that.id, that.selected);
         that.close();
       });
 
@@ -548,7 +548,7 @@
 
       $btnSure.on('click', function() {
         that.close();
-        that.options.selectedCb();
+        that.options.selectedCb(that.id, that.selected);
       });
     },
     _bindBtnCancel: function() {
