@@ -235,9 +235,20 @@
           $buttonlabel = that.$buttonlabel,
           $itemsWrap = that.$itemsWrap,
           text = $this.find('.ks-menu-item-text').text(),
-          value = $this.data('value');
+          value = $this.data('value'),
+          $ops = that.$el.find('option');
 
-      that.$el.val(value);
+      $.each($ops, function(i, op) {
+        if(op.value === value) {
+          op.selected = true;
+        } else {
+          op.selected = false;
+        }
+      });
+      
+      // that.$el.val(value);
+      that.$el.trigger('change');
+
       that.selected.val = value;
       that.selected.text = text;
       $btn.attr('data-value', value);
@@ -465,9 +476,27 @@
       var that = this,
           $itemsWrap = that.$itemsWrap,
           text = $this.find('.ks-menu-item-text').text(),
-          value = $this.data('value');
+          value = $this.data('value'),
+          $ops = that.$el.find('option');
+          
+      if ($this.hasClass('ks-menu-item-active')) {
+        $this.removeClass('ks-menu-item-active');
+        $.each($ops, function(i, op) {
+          if(op.value === value) {
+            op.selected = false;
+            // return false;
+          }
+        });
+      } else {
+        $this.addClass('ks-menu-item-active');
+        $.each($ops, function(i, op) {
+          if(op.value === value) {
+            op.selected = true;
+            // return false;
+          }
+        });
+      }
 
-      $this.toggleClass('ks-menu-item-active');
       that.selected.text = [];
       that.selected.val = [];
       $.each($itemsWrap.find('.ks-menu-item-active'), function(index, item) {
@@ -481,6 +510,9 @@
         that.$selectAll.removeClass('ks-select-all-active')        
       }
       
+      //给select触发change事件
+      that.$el.trigger('change');
+
       that._btnReload();
       
       cb && cb(that.id, that.selected);
@@ -507,23 +539,37 @@
     },
     _bindSelectAll: function() {
       var that = this,
-      $header = that.$header,
-      $selectAll = that.$selectAll,
-      $items = that.$items;
+          $header = that.$header,
+          $selectAll = that.$selectAll,
+          $items = that.$items,
+          $ops = that.$el.find('option');
 
       $selectAll.on('click', function() {
         var $this = $(this);
         if ($this.hasClass('ks-select-all-active')) {
           $items.not('.disabled').removeClass('ks-menu-item-active');
+
+          $.each($ops, function(i, op) {
+            op.selected = false;
+          });
+
           that.selected.val = [];
           that.selected.text = [];
           that._btnReload();
         } else {
           $items.not('.disabled').addClass('ks-menu-item-active');  
+
+          $.each($ops, function(i, op) {
+            op.selected = true;
+          });
+
           that.selected.val = that._getAllVal(); 
           that.selected.text = that._getAllText();
           that._btnReload();
         }
+
+        //给select触发change事件
+        that.$el.trigger('change');
 
         $this.toggleClass('ks-select-all-active');
       });
@@ -607,8 +653,7 @@
           $buttonlabel = that.$buttonlabel,
           val_str = that.selected.val.join(','),
           text_str = that.selected.text.length ? that.selected.text.join(',') : that.options.text.noneSelected;
-
-      that.$el.val(that.selected.val);
+          
       $btn.attr('data-value', val_str);
       $buttonlabel.text(text_str).attr('title', text_str);
 

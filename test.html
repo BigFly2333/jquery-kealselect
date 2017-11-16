@@ -17,10 +17,18 @@ $(function() {
   var kealselect = new KealSelect({
     text: { noneSelected: '==请选择==' },
     el: '.kealselect',
-    selectedCb: function(id, selected) {
-      console.log(JSON.stringify(kealselect.getVal()));
-    }
+    // selectedCb: function(id, selected) {
+    //   console.log(JSON.stringify(kealselect.getVal()));
+    // }
   });
+
+  $('#ks2').on('change', function(){
+      var $this = $(this);
+      if($this.val() === 'o6') {
+        console.log(222);
+      }
+    });
+
   window.kealselect = kealselect;
 
   // kealselect.setVal("o3");
@@ -121,15 +129,6 @@ $(function() {
 		<option value="o14-">Option 14---</option>
 	</select>
 </p>
-<script>
-  $(function(){
-    $('#Ks2').on('change', function(){
-      var $this = $(this);
-      if($this.find('.self-choose')) {
-        alert(222);
-      }
-    });
-  });
-</script>
+
 </body>
 </html>
