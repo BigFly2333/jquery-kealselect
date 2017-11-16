@@ -246,7 +246,7 @@
         }
       });
       
-      // that.$el.val(value);
+      // 给select触发change事件
       that.$el.trigger('change');
 
       that.selected.val = value;
@@ -259,6 +259,15 @@
       that.close();
 
       cb && cb(that.id, that.selected);
+
+      return this;
+    },
+    _bindClear: function() {
+      var that = this;
+      
+      that.clear();
+      that.options.selectedCb(that.id, that.selected);
+      that.close();
 
       return this;
     },
@@ -285,13 +294,20 @@
           options = that.options,
           $el = that.$el,
           $buttonlabel = that.$buttonlabel,
-          $items = that.$items;
+          $items = that.$items,
+          $ops = that.$el.find('option');
 
       $items.removeClass('ks-menu-item-active');
       $buttonlabel.text(options.text.noneSelected).attr('title', options.text.noneSelected);
       
+      $.each($ops, function(i, op) {
+        op.selected = false;
+      });
+
       that.selected = {};
-      $el.val('');
+
+      // 给select触发change事件
+      that.$el.trigger('change');
 
       return true;
     },
@@ -528,12 +544,22 @@
       return this;
     },
     _bindMenuHearderEvents: function() {
-      var that = this;
+      var that = this,
+          $clear = that.$clear,
+          $btnSure = that.$btnSure,
+          $btnCancel = that.$btnCancel;
 
       that._bindSelectAll();
-      that._bindClear();
-      that._bindBtnSure();
-      that._bindBtnCancel();
+
+      $clear.on('click', function() {
+        that._bindClear.apply(that);
+      });
+      $btnSure.on('click', function() {
+        that._bindBtnSure.apply(that);
+      });
+      $btnCancel.on('click', function() {
+        that._bindBtnCancel.apply(that);
+      });
 
       return this;
     },
@@ -577,33 +603,28 @@
       return this;
     },
     _bindClear: function() {
-      var that = this,
-          $clear = that.$clear;
+      var that = this;
 
-      $clear.on('click', function() {
-        that.clear();
-        that.options.selectedCb(that.id, that.selected);
-        that.close();
-      });
+      that.clear();
+      that.options.selectedCb(that.id, that.selected);
+      that.close();
 
       return this;
     },
     _bindBtnSure: function() {
-      var that = this,
-          $btnSure = that.$btnSure;
+      var that = this;
 
-      $btnSure.on('click', function() {
-        that.close();
-        that.options.selectedCb(that.id, that.selected);
-      });
+      that.close();
+      that.options.selectedCb(that.id, that.selected);
+
+      return this;
     },
     _bindBtnCancel: function() {
-      var that = this,
-      $btnCancel = that.$btnCancel;
+      var that = this;
 
-      $btnCancel.on('click', function() {
-        that.close();
-      });
+      that.close();
+
+      return this;
     },
     _getAllVal: function(isAbled) {
       var that = this,
@@ -664,15 +685,23 @@
           options = that.options,
           $el = that.$el,
           $buttonlabel = that.$buttonlabel,
-          $items = that.$items;
+          $selectAll = that.$selectAll,
+          $items = that.$items,
+          $ops = that.$el.find('option');
 
       $items.removeClass('ks-menu-item-active');
+      $selectAll.removeClass('ks-menu-item-active');
       $buttonlabel.text(options.text.noneSelected).attr('title', options.text.noneSelected);
       
+      $.each($ops, function(i, op) {
+        op.selected = false;
+      });
+
       that.selected.val = [];
       that.selected.text = [];
       
-      $el.val([]);
+      //给select触发change事件
+      that.$el.trigger('change');
 
       return true;
     },
@@ -879,6 +908,19 @@
         },
         function(select) {
           select._setVal(val, reload);
+        }
+      );
+    },
+    clear: function(selector) {
+      var that = this,
+          selects = that.selects;
+
+      _is(selector, selects,
+        function(select){
+          select._bindClear();
+        },
+        function(select) {
+          select._bindClear();
         }
       );
     }

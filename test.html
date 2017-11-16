@@ -22,11 +22,11 @@ $(function() {
     // }
   });
 
-  $('#ks2').on('change', function(){
+  $('#ks3').on('change', function(){
       var $this = $(this);
-      if($this.val() === 'o6') {
+      // if($this.val() === 'o6') {
         console.log(222);
-      }
+      // }
     });
 
   window.kealselect = kealselect;
@@ -49,15 +49,15 @@ $(function() {
 
   // kealselect._getSelect('#ks1')[0].clear();
   // kealselect._getSelect('#ks3')[0].test();  
+
+  $('#clear').on('click', function() {
+    kealselect.clear('#ks3,#ks1');
+  })
 });
 
 function showValues() {
   alert('val: ' + $('#ks3').val() + ',text: ' + $('#ks3').find('option:selected').text());
-  
-  // alert(JSON.stringify(kealselect.getVal()));
 }
-
-
 
 </script>
 </head>
@@ -80,6 +80,8 @@ $(function() {
 });
 </pre>
     <button onclick="showValues()">显示选取的值</button>
+    <button id='clear'>清空</button>
+    
 <h3>Basic</h3>
 <p>
 	<select class="kealselect kealselect-test" id ="ks1" title="Basic example" name="example-basic">
