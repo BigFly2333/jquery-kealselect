@@ -69,6 +69,8 @@
           $el = that.$el,
           title = $.trim($el.attr('title')) || '';
 
+      that.namespaceId = 'ks' + (new Date()).getTime;
+
       if (title !== '') o.text.noneSelected = title;
 
       this.id = $el.attr('id');
@@ -115,11 +117,14 @@
 
       if (this.$header) {
         this.$header
-        .addClass(o.headerClass)
-        .appendTo($menu);
+          .addClass(o.headerClass)
+          .appendTo($menu);
       }
 
       // build menu
+      var $itemsWrap = (this.$itemsWrap = $('<ul />')
+        .addClass('ks-menu-items-wrap')
+        .appendTo($menu));
       this.refresh(true);
 
       if (this.$footer) {
@@ -135,12 +140,8 @@
           $el = that.$el,
           $btn = that.$button,
           $buttonlabel = that.$buttonlabel,
-          $menu = that.$menu;
+          $itemsWrap = that.$itemsWrap;
       
-      var $itemsWrap = (this.$itemsWrap = $('<ul />')
-        .addClass('ks-menu-items-wrap')
-        .appendTo($menu));
-
       $.each($el.find('option'), function(index, option) {
         var $option = $(option),
             isSelected = $option.attr("selected"),
@@ -184,9 +185,8 @@
     _bindEvents: function() {
       var that = this;
 
-      $doc.on('mousedown', function(e){
+      $doc.on('mousedown.' + that.namespaceId, function(e){
         var target = e.target;
-
         if (that._isOpen && 
             target !== that.$button[0] &&
             target !== that.$menu[0] &&
@@ -200,6 +200,17 @@
       that._bindBtnEvents();
       that._bindMenuEvents();
 
+    },
+    _unbindEvents: function() {
+      var that = this,
+          $btn = that.$button,
+          $itemsWrap = that.$itemsWrap;
+
+      $doc.off(that.namespaceId);
+      $btn.off('click');
+      $itemsWrap.off('click', '.ks-menu-item');
+
+      return this;
     },
     _bindBtnEvents: function() {
       var that = this,
@@ -482,6 +493,33 @@
   _classExtends(Select, MultiSelect);
 
   $.extend(MultiSelect.prototype, {
+    _unbindEvents: function() {
+      var that = this,
+          $btn = that.$button,
+          $itemsWrap = that.$itemsWrap,
+          $clear = that.$clear,
+          $btnSure = that.$btnSure,
+          $btnCancel = that.$btnCancel,
+          $selectAll = that.$selectAll;
+
+      $doc.off(that.namespaceId);
+      $btn.off('click');
+      $itemsWrap.off('click', '.ks-menu-item');
+      $clear.off('click');
+      $btnSure.off('click');
+      $btnCancel.off('click');
+      $selectAll.off('click');
+
+      return this;
+    },
+    _bindMenuEvents: function() {
+      var that = this;
+
+      that._bindMenuHearderEvents();
+      that._bindMenuItemEvents();
+
+      return this;
+    },
     _bindMenuItemEvents: function() {
       var that = this,
           $itemsWrap = that.$itemsWrap;
@@ -541,22 +579,17 @@
 
       return this;
     },
-    _bindMenuEvents: function() {
-      var that = this;
-
-      that._bindMenuHearderEvents();
-      that._bindMenuItemEvents();
-
-      return this;
-    },
     _bindMenuHearderEvents: function() {
       var that = this,
           $clear = that.$clear,
           $btnSure = that.$btnSure,
-          $btnCancel = that.$btnCancel;
+          $btnCancel = that.$btnCancel,
+          $selectAll = that.$selectAll;
+          
 
-      that._bindSelectAll();
-
+      $selectAll.on('click', function() {
+        that._bindSelectAll.apply(that);
+      });
       $clear.on('click', function() {
         that._bindClear.apply(that);
       });
@@ -576,35 +609,33 @@
           $items = that.$items,
           $ops = that.$el.find('option');
 
-      $selectAll.on('click', function() {
-        var $this = $(this);
-        if ($this.hasClass('ks-select-all-active')) {
-          $items.not('.disabled').removeClass('ks-menu-item-active');
+      var $this = $selectAll;
+      if ($this.hasClass('ks-select-all-active')) {
+        $items.not('.disabled').removeClass('ks-menu-item-active');
 
-          $.each($ops, function(i, op) {
-            op.selected = false;
-          });
+        $.each($ops, function(i, op) {
+          op.selected = false;
+        });
 
-          that.selected.val = [];
-          that.selected.text = [];
-          that._btnReload();
-        } else {
-          $items.not('.disabled').addClass('ks-menu-item-active');  
+        that.selected.val = [];
+        that.selected.text = [];
+        that._btnReload();
+      } else {
+        $items.not('.disabled').addClass('ks-menu-item-active');  
 
-          $.each($ops, function(i, op) {
-            op.selected = true;
-          });
+        $.each($ops, function(i, op) {
+          op.selected = true;
+        });
 
-          that.selected.val = that._getAllVal(); 
-          that.selected.text = that._getAllText();
-          that._btnReload();
-        }
+        that.selected.val = that._getAllVal(); 
+        that.selected.text = that._getAllText();
+        that._btnReload();
+      }
 
-        //给select触发change事件
-        that.$el.trigger('change');
+      //给select触发change事件
+      that.$el.trigger('change');
 
-        $this.toggleClass('ks-select-all-active');
-      });
+      $this.toggleClass('ks-select-all-active');
 
       return this;
     },
@@ -687,7 +718,7 @@
           $ops = that.$el.find('option');
 
       $items.removeClass('ks-menu-item-active');
-      $selectAll.removeClass('ks-menu-item-active');
+      $selectAll.removeClass('ks-select-all-active');
       $buttonlabel.text(options.text.noneSelected).attr('title', options.text.noneSelected);
       
       $.each($ops, function(i, op) {
@@ -727,6 +758,8 @@
       $.each(that.$els, function(index, el) {
         var $el = $(el),
             multiple = $el.attr('multiple');
+
+        if (!$el.length) return false;
 
         $.extend(options, {$el: $el});
 
@@ -911,8 +944,17 @@
     clear: function(selector, callback) {
       var that = this,
           selects = that.selects;
-      
-      if (!callback) {
+
+      if (!!selector && !!callback) {
+        if (typeof selector !== 'string') {
+          throw('selector 参数类型有误');
+          return false;
+        }
+        if (typeof callback !== 'function') {
+          throw('callback 参数类型有误');
+          return false;
+        }
+      } else if (!!selector && !callback) {
         if (typeof selector === 'function') {
           callback = selector;
           selector = undefined;
@@ -932,6 +974,23 @@
       );
 
       callback && callback();
+    },
+    reload: function(selector) {
+      var that = this,
+          selects = that.selects;
+
+      _is(selector, selects,
+        function(select){
+          select.refresh();
+          select._unbindEvents();
+          select._bindEvents();
+        },
+        function(select) {
+          select.refresh();
+          select._unbindEvents();
+          select._bindEvents();
+        }
+      );
     }
     
   };

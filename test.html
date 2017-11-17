@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>jQuery Kealselect Demo</title>
 <link rel="stylesheet" type="text/css" href="kealselect/kealselect.style.css" />
-<link rel="stylesheet" href="http://at.alicdn.com/t/font_450768_lnzbxuxzkcipy14i.css">
+<!-- <link rel="stylesheet" href="http://at.alicdn.com/t/font_450768_lnzbxuxzkcipy14i.css"> -->
 <script type="text/javascript" src="kealselect/jquery-2.1.3.min.js"></script>
 
 <script type="text/javascript" src="kealselect/jquery.kealselect.js"></script>
@@ -55,6 +55,16 @@ $(function() {
       console.log(89283878);
     });
   })
+
+  
+  for(var i = 1; i<10; i++) {
+    var $op = $('<option />')
+              .val(i)
+              .text('--------------------' + i + '-----------------------');
+    $('#ks4').append($op);
+  }
+  kealselect.reload();
+  
 });
 
 function showValues() {
@@ -135,6 +145,10 @@ $(function() {
 		<option value="o13-">Option 13---</option>
 		<option value="o14-">Option 14---</option>
 	</select>
+</p>
+
+<p>
+  <select name="" id="ks4" class="kealselect" multiple="multiple"></select>
 </p>
 
 </body>
