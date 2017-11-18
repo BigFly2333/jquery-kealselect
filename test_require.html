@@ -4,72 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>jQuery Kealselect Demo</title>
 <link rel="stylesheet" type="text/css" href="kealselect/kealselect.style.css" />
-<!-- <link rel="stylesheet" href="http://at.alicdn.com/t/font_450768_lnzbxuxzkcipy14i.css"> -->
-<script type="text/javascript" src="static/vendor/jquery-2.1.3.min.js"></script>
-
-<script type="text/javascript" src="kealselect/jquery.kealselect.js"></script>
 <script type="text/javascript">
-
-$(function() {
-
-  $('#ks3').val(['o1-', 'o3-']);
-
-  var kealselect = new KealSelect({
-    text: { noneSelected: '==请选择==' },
-    el: '.kealselect',
-    selectedCb: function(id, selected) {
-      console.log(111);
-    }
-  });
-
-  $('#ks3').on('change', function(){
-      var $this = $(this);
-      // if($this.val() === 'o6') {
-        console.log(222);
-      // }
-    });
-
-  window.kealselect = kealselect;
-
-  // kealselect.setVal("o3");
-  kealselect.setVal( "#ks3", ['o1-', 'o3-'], false);
-  
-  // kealselect.bind('.kealselect', 'selec');
-  // kealselect.setOptions('#ks1, #ks2', {
-  //   selectedCb: function(id, selected){
-  //     console.log('id: ' + id + ',val: ' + selected.val);
-  //   }
-  // });
-  // console.log(kealselect.getAttr('#ks1', 'id'));
-  // // kealselect.bind('.kealselect', 'test', {
-  // //   cb: function(that) {
-  // //     console.log(that);
-  // //   }
-  // // });
-
-  // kealselect._getSelect('#ks1')[0].clear();
-  // kealselect._getSelect('#ks3')[0].test();  
-
-  $('#clear').on('click', function() {
-    kealselect.clear(function() {
-      console.log(89283878);
-    });
-  })
-
-  
-  for(var i = 1; i<10; i++) {
-    var $op = $('<option />')
-              .val(i)
-              .text('--------------------' + i + '-----------------------');
-    $('#ks4').append($op);
-  }
-  kealselect.reload();
-  
-});
-
-function showValues() {
-  alert('val: ' + $('#ks3').val() + ',text: ' + $('#ks3').find('option:selected').text());
-}
 
 </script>
 <style>
@@ -94,7 +29,7 @@ $(function() {
   // });
 });
 </pre>
-    <button onclick="showValues()">显示选取的值</button>
+    <button onclick="showValues()" id="ShowValue">显示选取的值</button>
     <button id='clear'>清空</button>
     
 <h3>Basic</h3>
@@ -150,6 +85,10 @@ $(function() {
 <p>
   <select name="" id="ks4" class="kealselect" multiple="multiple"></select>
 </p>
+
+<script type="text/javascript" src="static/vendor/require.min.js"></script>
+<script type="text/javascript" src="static/config.js"></script>
+<script type="text/javascript" src="static/js/test_require.js"></script>
 
 </body>
 </html>
