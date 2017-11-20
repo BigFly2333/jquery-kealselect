@@ -109,11 +109,17 @@
     _create: function(){
       var that = this,
           o = that.options,
-          $el = that.$el;
+          $el = that.$el,
+          $elNext = $el.next();
 
       var $wrapper = (this.$wrapper = $('<div></div>'))
-        .addClass('keal-select-wrapper')
-        .appendTo($el.parent());
+        .addClass('keal-select-wrapper');
+
+      if ($elNext.length) {
+        $elNext.before($wrapper);
+      } else {
+        $el.parent().append($wrapper);
+      }
 
       $el.appendTo($wrapper);
 
