@@ -209,7 +209,11 @@
       return this;
     },
     refresh: function(init) {
-      var that = this;
+      var that = this,
+          $itemsWrap = that.$itemsWrap;
+      if (init) {
+        $itemsWrap.html('');
+      }
       that._makeOption();
       that._position();
     },
@@ -1006,18 +1010,38 @@
 
       callback && callback();
     },
-    reload: function(selector) {
+    reload: function(selector, isClearOptions) {
       var that = this,
           selects = that.selects;
 
+      if (selector !== undefined) {
+        if (isClearOptions !== undefined && typeof isClearOptions !== 'boolean'){
+          throw('isClearOptions 参数类型有误');
+          return false;
+        } else if (isClearOptions !== undefined && typeof selector !== 'string') {
+          throw('selector 参数类型有误');
+          return false;
+        } else if (isClearOptions === undefined && typeof selector !== 'string' && typeof selector !== 'boolean') {
+          throw('参数类型有误');
+          return false;
+        } else if (isClearOptions === undefined && typeof selector === 'string') {
+          isClearOptions = true;
+        } else if (isClearOptions === undefined && typeof selector === 'boolean') {
+          isClearOptions = selector;
+          selector = undefined;
+        }
+      } else {
+        isClearOptions = true;
+      }
+
       _is(selector, selects,
         function(select){
-          select.refresh();
+          select.refresh(isClearOptions);
           select._unbindEvents();
           select._bindEvents();
         },
         function(select) {
-          select.refresh();
+          select.refresh(isClearOptions);
           select._unbindEvents();
           select._bindEvents();
         }

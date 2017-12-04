@@ -56,14 +56,14 @@ $(function() {
     });
   })
 
-  
+  $('#ks4').html('');
   for(var i = 1; i<10; i++) {
     var $op = $('<option />')
               .val(i)
               .text('--------------------' + i + '-----------------------');
     $('#ks4').append($op);
   }
-  kealselect.reload();
+  kealselect.reload(false);
   
 });
 
@@ -148,7 +148,9 @@ $(function() {
 </p>
 
 <p>
-  <select name="" id="ks4" class="kealselect" multiple="multiple"></select>
+  <select name="" id="ks4" class="kealselect" multiple="multiple">
+    <option value="11">djfi</option>
+  </select>
 </p>
 
 </body>
