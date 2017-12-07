@@ -277,6 +277,7 @@
           return false;
         }
         that._bindItemSelected($this, that.options.selectedCb);
+        return false;
       });
     },
     _bindItemSelected: function($this, cb) {
@@ -451,8 +452,8 @@
         case 'selected': 
           attr = that.selected;
           break;
-        case 'value': 
-          attr = that.selected.val || ''
+        case 'value':
+          attr = that.selected.val === undefined || that.selected.val === null ? '' : that.selected.val;
           break;
       }
       return attr;
@@ -947,23 +948,29 @@
       var that = this,
           selects = that.selects;
         
-      if (!selector && !val && reload === undefined) {
-        throw('参数不完整');
+      if (selector === undefined || selector === null || selector === '') {
+        throw('参数不完整: selector');
         return false;
-      } else if (val === undefined && reload === undefined) {
-        val = selector;
-        selector = undefined;
-        reload = true;
-      } else if (reload === undefined) {
-        if (typeof val === 'boolean') {
-          reload = val;
-          val = selector;
-          selector = undefined;
-        } else {
-          reload = true;          
+      } else if (val === undefined || val === null || val === '') {
+        throw('参数不完整: val');
+        return false;
+      } else if (typeof selector !== 'string') {
+        throw('selector参数类型有误');
+        return false;
+      } else if (typeof val !== 'string') {
+        if (typeof val === 'object' && !(val instanceof Array)) {
+          throw('val参数类型有误');
+          return false;
+        } else if (typeof val !== 'object') {
+          throw('val参数类型有误');
+          return false;
         }
-      } else if (typeof selector !== 'string' || typeof reload !== 'boolean' || typeof o === 'object' && !(o instanceof Array)) {
-        throw('参数类型有误');
+      }
+
+      if (reload === undefined || selector === null || selector === '') {
+        reload = true; 
+      } else if (typeof reload !== 'boolean') {
+        throw('reload参数类型有误');
         return false;
       }
 

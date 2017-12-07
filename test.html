@@ -12,7 +12,7 @@
 
 $(function() {
 
-  $('#ks3').val(['o1-', 'o3-']);
+  // $('#ks3').val(['o1-', 'o3-']);
 
   var kealselect = new KealSelect({
     text: { noneSelected: '==请选择==' },
@@ -32,7 +32,7 @@ $(function() {
   window.kealselect = kealselect;
 
   // kealselect.setVal("o3");
-  kealselect.setVal( "#ks3", ['o1-', 'o3-'], false);
+  kealselect.setVal( "#ks3", ['o2-', 'o3-']);
   
   // kealselect.bind('.kealselect', 'selec');
   // kealselect.setOptions('#ks1, #ks2', {
@@ -63,7 +63,7 @@ $(function() {
               .text('--------------------' + i + '-----------------------');
     $('#ks4').append($op);
   }
-  kealselect.reload(false);
+  // kealselect.reload();
   
 });
 
@@ -101,7 +101,7 @@ $(function() {
 <p>
 	<select class="kealselect kealselect-test" id ="ks1" title="Basic example" name="example-basic">
 	<option value="V1">Option 1111111111111111111111111111111111111111111111111111111111111111</option>
-	<option value="V2">Option 222222222222222</option>
+	<option value="V2" selected="selected">Option 222222222222222</option>
 	<option value="V3">Option 3</option>
 	<option value="o3" disabled="disabled">Option 4</option>
 	<option value="option5">Option 5</option>
@@ -134,7 +134,7 @@ $(function() {
 		<option value="o2-">Option 2---</option>
 		<option value="o3-">Option 3---</option>
 		<option value="o4-">Option 4---</option>
-		<option value="o5-">Option 5---</option>
+		<option value="o5-" selected="selected">Option 5---</option>
 		<option value="o6-" disabled="disabled">Option 6---</option>
     <option value="o7-">Option 7---</option>
 		<option value="o8-">Option 8---</option>
