@@ -453,7 +453,7 @@
           attr = that.selected;
           break;
         case 'value':
-          attr = that.selected.val === undefined || that.selected.val === null ? '' : that.selected.val;
+          attr = that.selected.val;
           break;
       }
       return attr;
