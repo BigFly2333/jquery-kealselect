@@ -66,7 +66,7 @@
     // this.options = $.extend(true, {}, this.options);
     this.options = {
       // header: true,
-      maxwidth: 300,
+      maxWidth: 300,
       minWidth: 200,
       btnClasses: '',
       menuClasses: '',
@@ -377,13 +377,13 @@
       $btn.css({
         width: (width || $menu.outerWidth()) + 'px',
         'min-width': (width || o.minWidth) + 'px',
-        'max-width': o.maxwidth
+        'max-width': o.maxWidth
       });
       $menu.css({
         top: $btn.outerHeight() + 'px',
         width: width + 'px',
         'min-width': (width || o.minWidth) + 'px',
-        'max-width': o.maxwidth
+        'max-width': o.maxWidth
       });
     },
     _setVal: function(val, reload) {
