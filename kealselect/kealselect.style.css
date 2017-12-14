@@ -11,32 +11,32 @@
 }
 .keal-select-wrapper {
   display: inline-block;
-	vertical-align: middle;
-	position: relative;
-	text-align: left;
-	background: #fff;
-	z-index: auto;
-	max-width: 500px;
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+  vertical-align: middle;
+  position: relative;
+  text-align: left;
+  background: #fff;
+  z-index: auto;
+  max-width: 100%;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .keal-select-wrapper .keal-select-btn {
   position: relative;
   display: block;
-	cursor: pointer;
-	padding: 0 2.2em 0 .5em;
-	white-space: nowrap;
-	overflow: hidden;
+  cursor: pointer;
+  padding: 0 2.2em 0 .5em;
+  white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
   border: 1px solid #D0D0D0;
   background: transparent;
   line-height: 28px;
-	font-size: 12px;
-	color: #797979;
+  font-size: 12px;
+  color: #797979;
   font-weight: normal;
   text-align: left;
   margin: 0;
@@ -53,15 +53,15 @@
 .keal-select-wrapper .keal-select-btn::after,
 .keal-select-wrapper .keal-select-btn.keal-select-btn-active::after{
   speak: none;
-	position: absolute;
-	top: 50%;
-	-webkit-transform: translateY(-50%);
-	transform: translateY(-50%);
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .keal-select-wrapper .keal-select-btn::after {
-	content: '\25BE';
+  content: '\25BE';
   right: .8em;
   -webkit-transition: all .4s cubic-bezier(0.4, 0, 0.2, 1);
   -moz-transition: all .4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -75,17 +75,17 @@
   transform: translateY(-50%) rotate(180deg);
 }
 .keal-select-wrapper .keal-select-menu {
-  position:absolute; 
-  z-index:10000; 
+  position:absolute;
+  z-index:10000;
   top: 0;
   left: 0;
-  display:none; 
+  display:none;
   /* padding:6px 0;  */
   text-align: left;
   border: 1px solid #D0D0D0;
   border-top: none;
-  overflow: hidden;  
-  background: #fff;  
+  overflow: hidden;
+  background: #fff;
 }
 .keal-select-wrapper .keal-select-menu .ks-menu-items-wrap {
   width: 100%;
@@ -100,7 +100,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  cursor: pointer;  
+  cursor: pointer;
   color: #666;
   border-bottom: 1px #f5f5f5 solid;
 }
