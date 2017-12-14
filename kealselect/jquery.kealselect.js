@@ -391,7 +391,7 @@
           maxWidth = _unitCheck(o.maxWidth);
 
       $wrapper.css({
-        width: (width || _unitCheck($menu.outerWidth())),        
+        width: width,        
       });
       
       $btn.css({
