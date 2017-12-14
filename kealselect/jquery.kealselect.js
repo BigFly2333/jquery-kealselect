@@ -59,6 +59,19 @@
       });
     }
   }
+  //百分比，px单位修饰器
+  function _unitCheck (val) {
+    if (!val) {
+      return '';
+    }
+    if (typeof val === "string" &&  /%$/.test(val)) {
+      return val;
+    }
+    if (typeof val === "number" || !isNaN(Number(val))) {
+      return val + 'px'
+    }
+    return '';
+  }
 
 
   // Select
@@ -368,21 +381,28 @@
       var that = this,
           o = that.options,
           $el = that.$el,
+          $wrapper = that.$wrapper,
           $btn = that.$button,
           $menu = that.$menu,
           $itemsWrap = that.$itemsWrap;
 
-      var width = $el.attr('width') || '';
+      var width = _unitCheck($el.attr('width') || ''),
+          minWidth = _unitCheck(o.minWidth),
+          maxWidth = _unitCheck(o.maxWidth);
 
+      $wrapper.css({
+        width: (width || _unitCheck($menu.outerWidth())),        
+      });
+      
       $btn.css({
-        width: (width || $menu.outerWidth()) + 'px',
-        'min-width': (width || o.minWidth) + 'px',
+        width: (width || _unitCheck($menu.outerWidth())),
+        'min-width': (width || o.minWidth),
         'max-width': o.maxWidth
       });
       $menu.css({
-        top: $btn.outerHeight() + 'px',
-        width: width + 'px',
-        'min-width': (width || o.minWidth) + 'px',
+        top: _unitCheck($btn.outerHeight()),
+        width: width,
+        'min-width': (width || minWidth),
         'max-width': o.maxWidth
       });
     },
