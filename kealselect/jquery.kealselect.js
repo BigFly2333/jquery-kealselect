@@ -972,7 +972,7 @@
         throw('参数不完整: selector');
         return false;
       } else if (val === undefined || val === null || val === '') {
-        throw('参数不完整: val');
+        // throw('参数不完整: val');
         return false;
       } else if (typeof selector !== 'string') {
         throw('selector参数类型有误');
