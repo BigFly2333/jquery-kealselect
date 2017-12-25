@@ -406,7 +406,7 @@
         'max-width': o.maxWidth
       });
     },
-    _setVal: function(val, reload) {
+    _setVal: function(val, reload, cb) {
       var that = this,
           $items = that.$itemsWrap.find('.ks-menu-item'),
           clear_status = false;
@@ -414,9 +414,9 @@
       if (typeof val === 'string') {
         for (var i = 0; i < $items.length; i++) {
           var $item = $items.eq(i);
-          if ($item.data('value') === val && !$item.hasClass('ks-menu-item-active')) {
+          if ($item.data('value').toString() === val && !$item.hasClass('ks-menu-item-active')) {
             if (!clear_status && reload) clear_status = that.clear();
-            that._bindItemSelected($item);
+            that._bindItemSelected($item, cb);
             break;
           }
         }
@@ -425,9 +425,9 @@
           var _val = val[j];
           for (var i = 0; i < $items.length; i++) {
             var $item = $items.eq(i);
-            if ($item.data('value') === _val && !$item.hasClass('ks-menu-item-active')) {
+            if ($item.data('value').toString() === _val.toString() && !$item.hasClass('ks-menu-item-active')) {
               if (!clear_status && reload) clear_status = that.clear();
-              that._bindItemSelected($item);
+              that._bindItemSelected($item, cb);
               break;
             }
           }
@@ -964,7 +964,7 @@
         }
       );
     },
-    setVal: function(selector, val, reload) {//reload: 是否重制select，默认为true
+    setVal: function(selector, val, reload, cb) {//reload: 是否重制select，默认为true
       var that = this,
           selects = that.selects;
         
@@ -987,19 +987,30 @@
         }
       }
 
-      if (reload === undefined || selector === null || selector === '') {
+      if (reload === undefined && cb === undefined) {
         reload = true; 
+      } else if (cb === undefined) {
+        if (typeof reload !== 'boolean' && typeof reload !== 'function') {
+          throw('参数类型有误');
+          return false;
+        } else if (typeof reload === 'function') {
+          cb = reload;
+          reload = true;
+        }
       } else if (typeof reload !== 'boolean') {
-        throw('reload参数类型有误');
+        throw('reload 参数类型有误');
+        return false;
+      } else if (typeof cb !== 'function') {
+        throw('cb 参数类型有误');
         return false;
       }
 
       _is(selector, selects,
         function(select){
-          select._setVal(val, reload);
+          select._setVal(val, reload, cb);
         },
         function(select) {
-          select._setVal(val, reload);
+          select._setVal(val, reload, cb);
         }
       );
     },
