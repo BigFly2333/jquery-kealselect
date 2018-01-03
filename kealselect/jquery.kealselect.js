@@ -411,10 +411,10 @@
           $items = that.$itemsWrap.find('.ks-menu-item'),
           clear_status = false;
 
-      if (typeof val === 'string') {
+      if (typeof val === 'string' || typeof val === 'number') {
         for (var i = 0; i < $items.length; i++) {
           var $item = $items.eq(i);
-          if ($item.data('value').toString() === val && !$item.hasClass('ks-menu-item-active')) {
+          if ($item.data('value').toString() === val.toString() && !$item.hasClass('ks-menu-item-active')) {
             if (!clear_status && reload) clear_status = that.clear();
             that._bindItemSelected($item, cb);
             break;
@@ -977,7 +977,7 @@
       } else if (typeof selector !== 'string') {
         throw('selector参数类型有误');
         return false;
-      } else if (typeof val !== 'string') {
+      } else if (typeof val !== 'string' && typeof val !== 'number') {
         if (typeof val === 'object' && !(val instanceof Array)) {
           throw('val参数类型有误');
           return false;
